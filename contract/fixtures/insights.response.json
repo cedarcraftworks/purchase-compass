@@ -1,0 +1,439 @@
+{
+  "summary": {
+    "totalYen": 58310,
+    "purchaseCount": 21,
+    "averageYen": 2777,
+    "periodStart": "2026-05-02T04:00:00+09:00",
+    "periodEnd": "2026-09-26T01:21:00+09:00"
+  },
+  "bySource": [
+    {
+      "source": "amazon",
+      "totalYen": 36340,
+      "count": 9,
+      "share": 0.6232
+    },
+    {
+      "source": "rakuten",
+      "totalYen": 9520,
+      "count": 4,
+      "share": 0.1633
+    },
+    {
+      "source": "mercari",
+      "totalYen": 7500,
+      "count": 3,
+      "share": 0.1286
+    },
+    {
+      "source": "other",
+      "totalYen": 4950,
+      "count": 5,
+      "share": 0.0849
+    }
+  ],
+  "byCategory": [
+    {
+      "category": "家電・ガジェット",
+      "totalYen": 24020,
+      "count": 5,
+      "share": 0.4119
+    },
+    {
+      "category": "本・マンガ",
+      "totalYen": 12320,
+      "count": 4,
+      "share": 0.2113
+    },
+    {
+      "category": "飲料",
+      "totalYen": 9520,
+      "count": 4,
+      "share": 0.1633
+    },
+    {
+      "category": "ファッション",
+      "totalYen": 7500,
+      "count": 3,
+      "share": 0.1286
+    },
+    {
+      "category": "サブスク・デジタル",
+      "totalYen": 4950,
+      "count": 5,
+      "share": 0.0849
+    }
+  ],
+  "monthly": [
+    {
+      "month": "2026-05",
+      "totalYen": 1970,
+      "count": 2
+    },
+    {
+      "month": "2026-06",
+      "totalYen": 6850,
+      "count": 4
+    },
+    {
+      "month": "2026-07",
+      "totalYen": 6850,
+      "count": 4
+    },
+    {
+      "month": "2026-08",
+      "totalYen": 5870,
+      "count": 3
+    },
+    {
+      "month": "2026-09",
+      "totalYen": 36770,
+      "count": 8
+    }
+  ],
+  "heatmap": [
+    {
+      "weekday": 0,
+      "hour": 12,
+      "count": 1
+    },
+    {
+      "weekday": 0,
+      "hour": 18,
+      "count": 1
+    },
+    {
+      "weekday": 1,
+      "hour": 4,
+      "count": 1
+    },
+    {
+      "weekday": 1,
+      "hour": 23,
+      "count": 1
+    },
+    {
+      "weekday": 2,
+      "hour": 4,
+      "count": 1
+    },
+    {
+      "weekday": 2,
+      "hour": 12,
+      "count": 1
+    },
+    {
+      "weekday": 2,
+      "hour": 13,
+      "count": 1
+    },
+    {
+      "weekday": 2,
+      "hour": 18,
+      "count": 1
+    },
+    {
+      "weekday": 2,
+      "hour": 23,
+      "count": 1
+    },
+    {
+      "weekday": 3,
+      "hour": 4,
+      "count": 1
+    },
+    {
+      "weekday": 3,
+      "hour": 23,
+      "count": 1
+    },
+    {
+      "weekday": 4,
+      "hour": 12,
+      "count": 1
+    },
+    {
+      "weekday": 4,
+      "hour": 13,
+      "count": 1
+    },
+    {
+      "weekday": 4,
+      "hour": 18,
+      "count": 1
+    },
+    {
+      "weekday": 4,
+      "hour": 23,
+      "count": 1
+    },
+    {
+      "weekday": 5,
+      "hour": 1,
+      "count": 2
+    },
+    {
+      "weekday": 5,
+      "hour": 4,
+      "count": 1
+    },
+    {
+      "weekday": 5,
+      "hour": 12,
+      "count": 1
+    },
+    {
+      "weekday": 6,
+      "hour": 4,
+      "count": 1
+    },
+    {
+      "weekday": 6,
+      "hour": 13,
+      "count": 1
+    }
+  ],
+  "findings": [
+    {
+      "kind": "time",
+      "text": "購入の52%が深夜（22時〜翌6時）です。",
+      "value": 0.5238
+    },
+    {
+      "kind": "weekday",
+      "text": "水曜日の購入が最も多く、24%を占めます。",
+      "value": 0.2381
+    },
+    {
+      "kind": "site_preference",
+      "text": "「家電・ガジェット」は100%をAmazonで買っています。",
+      "value": 1.0
+    },
+    {
+      "kind": "site_preference",
+      "text": "「サブスク・デジタル」は100%をその他で買っています。",
+      "value": 1.0
+    },
+    {
+      "kind": "secondhand",
+      "text": "「ファッション」の100%はメルカリ（中古）で買っています。",
+      "value": 1.0
+    }
+  ],
+  "categorized": [
+    {
+      "purchaseId": "p40",
+      "category": "サブスク・デジタル",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p50",
+      "category": "家電・ガジェット",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p41",
+      "category": "サブスク・デジタル",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p30",
+      "category": "ファッション",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p51",
+      "category": "家電・ガジェット",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p4",
+      "category": "飲料",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p42",
+      "category": "サブスク・デジタル",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p31",
+      "category": "ファッション",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p52",
+      "category": "家電・ガジェット",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p3",
+      "category": "飲料",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p43",
+      "category": "サブスク・デジタル",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p32",
+      "category": "ファッション",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p2",
+      "category": "飲料",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p10",
+      "category": "本・マンガ",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p44",
+      "category": "サブスク・デジタル",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p11",
+      "category": "本・マンガ",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p12",
+      "category": "本・マンガ",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p13",
+      "category": "本・マンガ",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p1",
+      "category": "飲料",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p20",
+      "category": "家電・ガジェット",
+      "method": "keyword",
+      "confidence": 1.0
+    },
+    {
+      "purchaseId": "p21",
+      "category": "家電・ガジェット",
+      "method": "keyword",
+      "confidence": 1.0
+    }
+  ],
+  "replenishment": [
+    {
+      "itemKey": "usb-c ケーブル 1m",
+      "title": "USB-C ケーブル 1m",
+      "category": "家電・ガジェット",
+      "timesBought": 3,
+      "medianIntervalDays": 30.5,
+      "lastPurchasedAt": "2026-07-10T13:00:00+09:00",
+      "daysSince": 102.0,
+      "status": "due",
+      "reason": "いつもは約30日ごとに購入。前回から102日経ち、そろそろ買い時です。"
+    },
+    {
+      "itemKey": "古着 パーカー",
+      "title": "古着 パーカー",
+      "category": "ファッション",
+      "timesBought": 3,
+      "medianIntervalDays": 30.5,
+      "lastPurchasedAt": "2026-08-03T18:00:00+09:00",
+      "daysSince": 77.8,
+      "status": "due",
+      "reason": "いつもは約30日ごとに購入。前回から78日経ち、そろそろ買い時です。"
+    },
+    {
+      "itemKey": "スペシャルティコーヒー豆 500g",
+      "title": "スペシャルティコーヒー豆 500g",
+      "category": "飲料",
+      "timesBought": 4,
+      "medianIntervalDays": 30.0,
+      "lastPurchasedAt": "2026-09-18T12:00:00+09:00",
+      "daysSince": 32.0,
+      "status": "due",
+      "reason": "いつもは約30日ごとに購入。前回から32日経ち、そろそろ買い時です。"
+    }
+  ],
+  "impulse": [
+    {
+      "purchaseId": "p20",
+      "title": "ワイヤレスイヤホン ノイズキャンセリング",
+      "amountYen": 19800,
+      "orderedAt": "2026-09-26T01:12:00+09:00",
+      "score": 60,
+      "reasons": [
+        {
+          "code": "late_night",
+          "label": "深夜1時台の購入",
+          "points": 30
+        },
+        {
+          "code": "unusual_amount",
+          "label": "このカテゴリのいつもの20.2倍の金額",
+          "points": 30
+        }
+      ]
+    },
+    {
+      "purchaseId": "p21",
+      "title": "イヤホンケース",
+      "amountYen": 1280,
+      "orderedAt": "2026-09-26T01:21:00+09:00",
+      "score": 55,
+      "reasons": [
+        {
+          "code": "late_night",
+          "label": "深夜1時台の購入",
+          "points": 30
+        },
+        {
+          "code": "burst",
+          "label": "直前30分以内に1件購入",
+          "points": 25
+        }
+      ]
+    }
+  ],
+  "subscriptions": [
+    {
+      "key": "動画配信 月額",
+      "title": "動画配信 月額",
+      "amountYen": 990,
+      "cadence": "monthly",
+      "occurrences": 5,
+      "lastChargedAt": "2026-09-02T04:00:00+09:00",
+      "nextExpectedAt": "2026-10-03T04:00:00+09:00",
+      "yearlyCostYen": 11880,
+      "reason": "同じ金額（990円）の支払いが約31日ごとに5回続いています。年間で約11,880円です。"
+    }
+  ]
+}

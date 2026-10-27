@@ -1,0 +1,129 @@
+{
+  "keywords": [
+    "技術書",
+    "イヤホン",
+    "コーヒー"
+  ],
+  "products": [
+    {
+      "title": "スペシャルティコーヒー豆 エチオピア 浅煎り 200g",
+      "priceYen": 1980,
+      "url": "https://search.rakuten.co.jp/search/mall/%E3%82%B9%E3%83%9A%E3%82%B7%E3%83%A3%E3%83%AB%E3%83%86%E3%82%A3%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC%E8%B1%86/",
+      "imageUrl": null,
+      "shop": "サンプル商品",
+      "origin": "sample",
+      "score": 0.2859,
+      "keyword": "コーヒー",
+      "reason": "よく買う「コーヒー」から。過去に買った「スペシャルティコーヒー豆 500g」に近い商品です。",
+      "becauseOf": "スペシャルティコーヒー豆 500g"
+    },
+    {
+      "title": "Pythonではじめるデータ分析 入門",
+      "priceYen": 3520,
+      "url": "https://search.rakuten.co.jp/search/mall/Python%E3%81%A7%E3%81%AF%E3%81%98%E3%82%81%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E5%88%86%E6%9E%90/",
+      "imageUrl": null,
+      "shop": "サンプル商品",
+      "origin": "sample",
+      "score": 0.0993,
+      "keyword": "技術書",
+      "reason": "よく買う「本・マンガ」カテゴリから。過去に買った「技術書 入門」に近い商品です。",
+      "becauseOf": "技術書 入門"
+    },
+    {
+      "title": "USB-C 急速充電器 65W 2ポート",
+      "priceYen": 3480,
+      "url": "https://search.rakuten.co.jp/search/mall/USB-C/",
+      "imageUrl": null,
+      "shop": "サンプル商品",
+      "origin": "sample",
+      "score": 0.0667,
+      "keyword": "イヤホン",
+      "reason": "よく買う「家電・ガジェット」カテゴリから。過去に買った「USB-C ケーブル 1m」に近い商品です。",
+      "becauseOf": "USB-C ケーブル 1m"
+    },
+    {
+      "title": "カフェインレスコーヒー 粉 300g",
+      "priceYen": 1580,
+      "url": "https://search.rakuten.co.jp/search/mall/%E3%82%AB%E3%83%95%E3%82%A7%E3%82%A4%E3%83%B3%E3%83%AC%E3%82%B9%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC/",
+      "imageUrl": null,
+      "shop": "サンプル商品",
+      "origin": "sample",
+      "score": 0.1043,
+      "keyword": "コーヒー",
+      "reason": "よく買う「コーヒー」から。過去に買った「スペシャルティコーヒー豆 500g」に近い商品です。",
+      "becauseOf": "スペシャルティコーヒー豆 500g"
+    },
+    {
+      "title": "Webを支える技術",
+      "priceYen": 2860,
+      "url": "https://search.rakuten.co.jp/search/mall/Web%E3%82%92%E6%94%AF%E3%81%88%E3%82%8B%E6%8A%80%E8%A1%93/",
+      "imageUrl": null,
+      "shop": "サンプル商品",
+      "origin": "sample",
+      "score": 0.0276,
+      "keyword": "技術書",
+      "reason": "よく買う「本・マンガ」カテゴリから。好みの傾向に近い商品です。",
+      "becauseOf": null
+    },
+    {
+      "title": "モバイルバッテリー 10000mAh",
+      "priceYen": 2980,
+      "url": "https://search.rakuten.co.jp/search/mall/%E3%83%A2%E3%83%90%E3%82%A4%E3%83%AB%E3%83%90%E3%83%83%E3%83%86%E3%83%AA%E3%83%BC/",
+      "imageUrl": null,
+      "shop": "サンプル商品",
+      "origin": "sample",
+      "score": 0.028,
+      "keyword": "イヤホン",
+      "reason": "よく買う「家電・ガジェット」カテゴリから。好みの傾向に近い商品です。",
+      "becauseOf": null
+    }
+  ],
+  "searchLinks": [
+    {
+      "site": "amazon",
+      "keyword": "技術書",
+      "url": "https://www.amazon.co.jp/s?k=%E6%8A%80%E8%A1%93%E6%9B%B8"
+    },
+    {
+      "site": "rakuten",
+      "keyword": "技術書",
+      "url": "https://search.rakuten.co.jp/search/mall/%E6%8A%80%E8%A1%93%E6%9B%B8/"
+    },
+    {
+      "site": "mercari",
+      "keyword": "技術書",
+      "url": "https://jp.mercari.com/search?keyword=%E6%8A%80%E8%A1%93%E6%9B%B8"
+    },
+    {
+      "site": "amazon",
+      "keyword": "イヤホン",
+      "url": "https://www.amazon.co.jp/s?k=%E3%82%A4%E3%83%A4%E3%83%9B%E3%83%B3"
+    },
+    {
+      "site": "rakuten",
+      "keyword": "イヤホン",
+      "url": "https://search.rakuten.co.jp/search/mall/%E3%82%A4%E3%83%A4%E3%83%9B%E3%83%B3/"
+    },
+    {
+      "site": "mercari",
+      "keyword": "イヤホン",
+      "url": "https://jp.mercari.com/search?keyword=%E3%82%A4%E3%83%A4%E3%83%9B%E3%83%B3"
+    },
+    {
+      "site": "amazon",
+      "keyword": "コーヒー",
+      "url": "https://www.amazon.co.jp/s?k=%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC"
+    },
+    {
+      "site": "rakuten",
+      "keyword": "コーヒー",
+      "url": "https://search.rakuten.co.jp/search/mall/%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC/"
+    },
+    {
+      "site": "mercari",
+      "keyword": "コーヒー",
+      "url": "https://jp.mercari.com/search?keyword=%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC"
+    }
+  ],
+  "sourceStatus": "sample"
+}

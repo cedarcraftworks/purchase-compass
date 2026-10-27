@@ -1,0 +1,1023 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Purchase Compass Analyzer",
+    "description": "Turns purchase history into trends, findings and recommendations.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/healthz": {
+      "get": {
+        "summary": "Healthz",
+        "operationId": "healthz_healthz_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Healthz Healthz Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/insights": {
+      "post": {
+        "summary": "Insights",
+        "operationId": "insights_v1_insights_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalyzeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InsightsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/recommendations": {
+      "post": {
+        "summary": "Recommendations",
+        "operationId": "recommendations_v1_recommendations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecommendRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnalyzeRequest": {
+        "properties": {
+          "purchases": {
+            "items": {
+              "$ref": "#/components/schemas/Purchase"
+            },
+            "type": "array",
+            "maxItems": 20000,
+            "title": "Purchases"
+          },
+          "asOf": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Asof",
+            "description": "Treat this as 'now' (defaults to the clock)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "purchases"
+        ],
+        "title": "AnalyzeRequest"
+      },
+      "Categorized": {
+        "properties": {
+          "purchaseId": {
+            "type": "string",
+            "title": "Purchaseid"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "食品",
+              "飲料",
+              "日用品",
+              "美容・健康",
+              "ファッション",
+              "家電・ガジェット",
+              "本・マンガ",
+              "ゲーム・ホビー",
+              "サブスク・デジタル",
+              "その他"
+            ],
+            "title": "Category"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "given",
+              "keyword",
+              "model",
+              "fallback"
+            ],
+            "title": "Method"
+          },
+          "confidence": {
+            "type": "number",
+            "title": "Confidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "purchaseId",
+          "category",
+          "method",
+          "confidence"
+        ],
+        "title": "Categorized"
+      },
+      "CategoryTotal": {
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": [
+              "食品",
+              "飲料",
+              "日用品",
+              "美容・健康",
+              "ファッション",
+              "家電・ガジェット",
+              "本・マンガ",
+              "ゲーム・ホビー",
+              "サブスク・デジタル",
+              "その他"
+            ],
+            "title": "Category"
+          },
+          "totalYen": {
+            "type": "integer",
+            "title": "Totalyen"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "share": {
+            "type": "number",
+            "title": "Share"
+          }
+        },
+        "type": "object",
+        "required": [
+          "category",
+          "totalYen",
+          "count",
+          "share"
+        ],
+        "title": "CategoryTotal"
+      },
+      "Finding": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "time",
+              "weekday",
+              "category_trend",
+              "site_preference",
+              "secondhand",
+              "basket"
+            ],
+            "title": "Kind"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "text"
+        ],
+        "title": "Finding",
+        "description": "One plain-language observation about the user's buying habits."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "HeatCell": {
+        "properties": {
+          "weekday": {
+            "type": "integer",
+            "maximum": 6.0,
+            "minimum": 0.0,
+            "title": "Weekday",
+            "description": "0 = Monday"
+          },
+          "hour": {
+            "type": "integer",
+            "maximum": 23.0,
+            "minimum": 0.0,
+            "title": "Hour"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "weekday",
+          "hour",
+          "count"
+        ],
+        "title": "HeatCell"
+      },
+      "ImpulseCandidate": {
+        "properties": {
+          "purchaseId": {
+            "type": "string",
+            "title": "Purchaseid"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "amountYen": {
+            "type": "integer",
+            "title": "Amountyen"
+          },
+          "orderedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Orderedat"
+          },
+          "score": {
+            "type": "integer",
+            "title": "Score"
+          },
+          "reasons": {
+            "items": {
+              "$ref": "#/components/schemas/ImpulseReason"
+            },
+            "type": "array",
+            "title": "Reasons"
+          }
+        },
+        "type": "object",
+        "required": [
+          "purchaseId",
+          "title",
+          "amountYen",
+          "orderedAt",
+          "score",
+          "reasons"
+        ],
+        "title": "ImpulseCandidate"
+      },
+      "ImpulseReason": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "late_night",
+              "burst",
+              "unusual_amount",
+              "new_category"
+            ],
+            "title": "Code"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "points": {
+            "type": "integer",
+            "title": "Points"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "label",
+          "points"
+        ],
+        "title": "ImpulseReason"
+      },
+      "InsightsResponse": {
+        "properties": {
+          "summary": {
+            "$ref": "#/components/schemas/Summary"
+          },
+          "bySource": {
+            "items": {
+              "$ref": "#/components/schemas/SourceTotal"
+            },
+            "type": "array",
+            "title": "Bysource"
+          },
+          "byCategory": {
+            "items": {
+              "$ref": "#/components/schemas/CategoryTotal"
+            },
+            "type": "array",
+            "title": "Bycategory"
+          },
+          "monthly": {
+            "items": {
+              "$ref": "#/components/schemas/MonthTotal"
+            },
+            "type": "array",
+            "title": "Monthly"
+          },
+          "heatmap": {
+            "items": {
+              "$ref": "#/components/schemas/HeatCell"
+            },
+            "type": "array",
+            "title": "Heatmap"
+          },
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/Finding"
+            },
+            "type": "array",
+            "title": "Findings"
+          },
+          "categorized": {
+            "items": {
+              "$ref": "#/components/schemas/Categorized"
+            },
+            "type": "array",
+            "title": "Categorized"
+          },
+          "replenishment": {
+            "items": {
+              "$ref": "#/components/schemas/Replenishment"
+            },
+            "type": "array",
+            "title": "Replenishment"
+          },
+          "impulse": {
+            "items": {
+              "$ref": "#/components/schemas/ImpulseCandidate"
+            },
+            "type": "array",
+            "title": "Impulse"
+          },
+          "subscriptions": {
+            "items": {
+              "$ref": "#/components/schemas/Subscription"
+            },
+            "type": "array",
+            "title": "Subscriptions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "summary",
+          "bySource",
+          "byCategory",
+          "monthly",
+          "heatmap",
+          "findings",
+          "categorized",
+          "replenishment",
+          "impulse",
+          "subscriptions"
+        ],
+        "title": "InsightsResponse"
+      },
+      "MonthTotal": {
+        "properties": {
+          "month": {
+            "type": "string",
+            "title": "Month",
+            "description": "YYYY-MM in the analysis time zone"
+          },
+          "totalYen": {
+            "type": "integer",
+            "title": "Totalyen"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "month",
+          "totalYen",
+          "count"
+        ],
+        "title": "MonthTotal"
+      },
+      "Product": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "priceYen": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priceyen"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "imageUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Imageurl"
+          },
+          "shop": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shop"
+          },
+          "origin": {
+            "type": "string",
+            "enum": [
+              "rakuten",
+              "sample"
+            ],
+            "title": "Origin"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "keyword": {
+            "type": "string",
+            "title": "Keyword"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "becauseOf": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Becauseof",
+            "description": "The past purchase this one resembles most"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "priceYen",
+          "url",
+          "origin",
+          "score",
+          "keyword",
+          "reason"
+        ],
+        "title": "Product"
+      },
+      "Purchase": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "amazon",
+              "rakuten",
+              "mercari",
+              "store",
+              "other"
+            ],
+            "title": "Source"
+          },
+          "orderedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Orderedat",
+            "description": "Timezone-aware purchase time"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "amountYen": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Amountyen",
+            "description": "Total paid for this line, in yen"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Quantity",
+            "default": 1
+          },
+          "store": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Store"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "食品",
+                  "飲料",
+                  "日用品",
+                  "美容・健康",
+                  "ファッション",
+                  "家電・ガジェット",
+                  "本・マンガ",
+                  "ゲーム・ホビー",
+                  "サブスク・デジタル",
+                  "その他"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category",
+            "description": "Set when the user chose it explicitly"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "source",
+          "orderedAt",
+          "title",
+          "amountYen"
+        ],
+        "title": "Purchase"
+      },
+      "RecommendRequest": {
+        "properties": {
+          "purchases": {
+            "items": {
+              "$ref": "#/components/schemas/Purchase"
+            },
+            "type": "array",
+            "maxItems": 20000,
+            "title": "Purchases"
+          },
+          "asOf": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Asof",
+            "description": "Treat this as 'now' (defaults to the clock)"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 30.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "default": 8
+          }
+        },
+        "type": "object",
+        "required": [
+          "purchases"
+        ],
+        "title": "RecommendRequest"
+      },
+      "RecommendResponse": {
+        "properties": {
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Keywords"
+          },
+          "products": {
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            },
+            "type": "array",
+            "title": "Products"
+          },
+          "searchLinks": {
+            "items": {
+              "$ref": "#/components/schemas/SearchLink"
+            },
+            "type": "array",
+            "title": "Searchlinks"
+          },
+          "sourceStatus": {
+            "type": "string",
+            "enum": [
+              "live",
+              "fallback",
+              "sample"
+            ],
+            "title": "Sourcestatus",
+            "description": "live = Rakuten API answered; fallback = it failed and samples were used; sample = no API key configured"
+          }
+        },
+        "type": "object",
+        "required": [
+          "keywords",
+          "products",
+          "searchLinks",
+          "sourceStatus"
+        ],
+        "title": "RecommendResponse"
+      },
+      "Replenishment": {
+        "properties": {
+          "itemKey": {
+            "type": "string",
+            "title": "Itemkey"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "食品",
+              "飲料",
+              "日用品",
+              "美容・健康",
+              "ファッション",
+              "家電・ガジェット",
+              "本・マンガ",
+              "ゲーム・ホビー",
+              "サブスク・デジタル",
+              "その他"
+            ],
+            "title": "Category"
+          },
+          "timesBought": {
+            "type": "integer",
+            "title": "Timesbought"
+          },
+          "medianIntervalDays": {
+            "type": "number",
+            "title": "Medianintervaldays"
+          },
+          "lastPurchasedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Lastpurchasedat"
+          },
+          "daysSince": {
+            "type": "number",
+            "title": "Dayssince"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "due",
+              "soon",
+              "ok"
+            ],
+            "title": "Status"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "itemKey",
+          "title",
+          "category",
+          "timesBought",
+          "medianIntervalDays",
+          "lastPurchasedAt",
+          "daysSince",
+          "status",
+          "reason"
+        ],
+        "title": "Replenishment"
+      },
+      "SearchLink": {
+        "properties": {
+          "site": {
+            "type": "string",
+            "enum": [
+              "amazon",
+              "rakuten",
+              "mercari"
+            ],
+            "title": "Site"
+          },
+          "keyword": {
+            "type": "string",
+            "title": "Keyword"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "site",
+          "keyword",
+          "url"
+        ],
+        "title": "SearchLink"
+      },
+      "SourceTotal": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": [
+              "amazon",
+              "rakuten",
+              "mercari",
+              "store",
+              "other"
+            ],
+            "title": "Source"
+          },
+          "totalYen": {
+            "type": "integer",
+            "title": "Totalyen"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "share": {
+            "type": "number",
+            "title": "Share"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source",
+          "totalYen",
+          "count",
+          "share"
+        ],
+        "title": "SourceTotal"
+      },
+      "Subscription": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "amountYen": {
+            "type": "integer",
+            "title": "Amountyen"
+          },
+          "cadence": {
+            "type": "string",
+            "enum": [
+              "monthly",
+              "yearly"
+            ],
+            "title": "Cadence"
+          },
+          "occurrences": {
+            "type": "integer",
+            "title": "Occurrences"
+          },
+          "lastChargedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Lastchargedat"
+          },
+          "nextExpectedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Nextexpectedat"
+          },
+          "yearlyCostYen": {
+            "type": "integer",
+            "title": "Yearlycostyen"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "title",
+          "amountYen",
+          "cadence",
+          "occurrences",
+          "lastChargedAt",
+          "nextExpectedAt",
+          "yearlyCostYen",
+          "reason"
+        ],
+        "title": "Subscription"
+      },
+      "Summary": {
+        "properties": {
+          "totalYen": {
+            "type": "integer",
+            "title": "Totalyen"
+          },
+          "purchaseCount": {
+            "type": "integer",
+            "title": "Purchasecount"
+          },
+          "averageYen": {
+            "type": "integer",
+            "title": "Averageyen"
+          },
+          "periodStart": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Periodstart"
+          },
+          "periodEnd": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Periodend"
+          }
+        },
+        "type": "object",
+        "required": [
+          "totalYen",
+          "purchaseCount",
+          "averageYen",
+          "periodStart",
+          "periodEnd"
+        ],
+        "title": "Summary"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
