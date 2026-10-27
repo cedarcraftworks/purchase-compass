@@ -1,0 +1,30 @@
+name: Deploy
+
+# Continuous delivery: only a main-branch commit that passed CI is deployed.
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Trigger the hosting deploy hooks
+        env:
+          ANALYZER_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_ANALYZER }}
+          API_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_API }}
+          WEB_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK_WEB }}
+        run: |
+          if [ -z "$API_HOOK" ]; then
+            echo "::notice::Deploy hooks are not configured yet; see docs/deploy.md. Skipping."
+            exit 0
+          fi
+          # Back to front: the analyzer and API first, so the new web app never calls an old API.
+          for hook in "$ANALYZER_HOOK" "$API_HOOK" "$WEB_HOOK"; do
+            curl -fsS -X POST "$hook" > /dev/null
+          done
+          echo "Deploy triggered for commit ${{ github.event.workflow_run.head_sha }}"
