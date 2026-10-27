@@ -1,7 +1,7 @@
 # Build context: repository root (docker build -f apps/web/Dockerfile .)
 FROM node:22-slim AS build
 WORKDIR /repo
-COPY package.json package-lock.json* ./
+COPY package.json package-lock.json* tsconfig.base.json ./
 COPY packages/shared/package.json packages/shared/
 COPY apps/api/package.json apps/api/
 COPY apps/web/package.json apps/web/
