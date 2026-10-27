@@ -22,7 +22,25 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * Static demo (GitHub Pages): there is no server, so GET requests read a
+ * snapshot that `scripts/snapshot-demo.mjs` recorded from a real API, and
+ * writes are refused exactly like the API's read-only demo mode does.
+ */
+const STATIC_DEMO = import.meta.env.VITE_STATIC_DEMO === "true";
+
+async function fromSnapshot<T>(method: string, path: string): Promise<T> {
+  if (method !== "GET") {
+    throw new ApiError(403, "demo_read_only", "デモ環境では変更できません", "手元で起動するとデータを登録できます。");
+  }
+  const name = path.replace(/^\/api\//, "");
+  const res = await fetch(`${import.meta.env.BASE_URL}demo/${name}.json`);
+  if (!res.ok) throw new ApiError(res.status, "not_found", "デモデータを読み込めません");
+  return (await res.json()) as T;
+}
+
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
+  if (STATIC_DEMO) return fromSnapshot<T>(method, path);
   let res: Response;
   try {
     res = await fetch(path, {

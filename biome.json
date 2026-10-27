@@ -6,7 +6,17 @@
     "useIgnoreFile": true
   },
   "files": {
-    "includes": ["**", "!**/dist", "!**/node_modules", "!**/coverage", "!contract", "!samples", "!services", "!**/*.md"]
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/node_modules",
+      "!**/coverage",
+      "!contract",
+      "!samples",
+      "!services",
+      "!**/*.md",
+      "!apps/web/public"
+    ]
   },
   "formatter": {
     "enabled": true,

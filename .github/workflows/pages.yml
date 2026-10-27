@@ -1,0 +1,38 @@
+name: Demo (GitHub Pages)
+
+# Publishes a server-less demo: the web app built in "pages" mode reads a
+# recorded snapshot of the real API's output from apps/web/public/demo.
+on:
+  push:
+    branches: [main]
+    paths: ["apps/web/**", "packages/shared/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run build --workspace=@purchase-compass/web -- --mode pages
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/web/dist
+      - id: deployment
+        uses: actions/deploy-pages@v4

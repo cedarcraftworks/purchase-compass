@@ -4,6 +4,7 @@ coverage/
 .env
 .env.*
 !.env.example
+!apps/web/.env.pages
 *.log
 .DS_Store
 __pycache__/
