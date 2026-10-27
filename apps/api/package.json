@@ -1,0 +1,25 @@
+{
+  "name": "@purchase-compass/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/main.ts",
+    "build": "esbuild src/main.ts src/migrate.ts src/seed.ts --bundle --platform=node --format=esm --external:hono --external:@hono/node-server --external:postgres --external:zod --outdir=dist",
+    "start": "node dist/main.js",
+    "migrate": "tsx src/migrate.ts",
+    "seed": "tsx src/seed.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test --test-concurrency=1 'test/**/*.test.ts'"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.0",
+    "@purchase-compass/shared": "*",
+    "hono": "^4.13.0",
+    "postgres": "^3.4.9",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
+  }
+}
