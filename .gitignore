@@ -13,3 +13,6 @@ __pycache__/
 .venv/
 # Your real purchase history must never be committed. Put it here instead.
 private-data/
+
+# Compiled output must never sit next to the sources (Vite would load it first).
+apps/web/src/**/*.js
