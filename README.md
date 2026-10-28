@@ -48,6 +48,13 @@ I wanted to know what I actually buy and get recommendations based on that. But 
   <img src="docs/images/recommend.png" alt="Buy-again list and recommended products with reasons" width="49%" />
   <img src="docs/images/signals.png" alt="Recurring payments and impulse-purchase candidates" width="49%" />
 </p>
+<p>
+  <img src="docs/images/import.png" alt="Import preview: columns guessed from the header, with a sample file from Rakuten" width="62%" />
+  <img src="docs/images/mobile.png" alt="The trends screen on a phone" width="18%" />
+</p>
+<p><img src="docs/images/trends-dark.png" alt="The trends screen in dark mode" width="62%" /></p>
+
+*Import preview with a downloadable sample, the phone layout, and dark mode.*
 
 ## Architecture
 

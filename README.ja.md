@@ -51,6 +51,13 @@
   <img src="docs/images/recommend.png" alt="買い時と理由付きのおすすめ" width="49%" />
   <img src="docs/images/signals.png" alt="定期的な支払いと衝動買いの候補" width="49%" />
 </p>
+<p>
+  <img src="docs/images/import.png" alt="取り込みのプレビュー。楽天の見本ファイルの列を自動で推測" width="62%" />
+  <img src="docs/images/mobile.png" alt="スマートフォンでの傾向画面" width="18%" />
+</p>
+<p><img src="docs/images/trends-dark.png" alt="ダークモードの傾向画面" width="62%" /></p>
+
+*見本ファイルを使った取り込みのプレビュー、スマートフォン表示、ダークモード。*
 
 ## 構成
 
