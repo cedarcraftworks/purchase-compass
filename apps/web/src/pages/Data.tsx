@@ -58,7 +58,9 @@ function Importer({ disabled, onImported }: { disabled: boolean; onImported: () 
   const [message, setMessage] = useState<{ kind: "ok" | "error"; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
 
-  async function runPreview(nextText = text, nextMapping = mapping) {
+  // Both arguments are explicit: a default parameter would silently swap an
+  // intentional `undefined` (forget the old mapping) for the previous file's mapping.
+  async function runPreview(nextText: string, nextMapping: ColumnMapping | undefined) {
     if (!nextText.trim()) return;
     setBusy(true);
     setMessage(null);
@@ -71,6 +73,16 @@ function Importer({ disabled, onImported }: { disabled: boolean; onImported: () 
     } finally {
       setBusy(false);
     }
+  }
+
+  // A different shop means a different file layout: start over rather than
+  // carry the previous file's column mapping into the next one.
+  function changeSource(next: Source) {
+    setSource(next);
+    setText("");
+    setPreview(null);
+    setMapping(undefined);
+    setMessage(null);
   }
 
   async function onFile(file: File | undefined) {
@@ -113,7 +125,7 @@ function Importer({ disabled, onImported }: { disabled: boolean; onImported: () 
         <legend>どこで買ったものですか</legend>
         {SOURCES.map((s) => (
           <label key={s} className={s === source ? "chip chip-on" : "chip"}>
-            <input type="radio" name="source" value={s} checked={s === source} onChange={() => setSource(s)} />
+            <input type="radio" name="source" value={s} checked={s === source} onChange={() => changeSource(s)} />
             {SOURCE_LABEL[s]}
           </label>
         ))}
@@ -127,17 +139,29 @@ function Importer({ disabled, onImported }: { disabled: boolean; onImported: () 
       <div className="import-inputs">
         <label className="file">
           CSVファイルを選ぶ
-          <input type="file" accept=".csv,.tsv,.txt" onChange={(e) => void onFile(e.target.files?.[0])} />
+          <input
+            type="file"
+            accept=".csv,.tsv,.txt"
+            onChange={(e) => {
+              void onFile(e.target.files?.[0]);
+              e.target.value = ""; // so choosing the same file again still triggers a preview
+            }}
+          />
         </label>
         <span className="muted">または</span>
         <textarea
           aria-label="表を貼り付ける"
           placeholder="表をここに貼り付ける（1行目は列名）"
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e) => {
+            setText(e.target.value);
+            // New text may have different columns; guess them afresh on the next preview.
+            setMapping(undefined);
+            setPreview(null);
+          }}
           rows={4}
         />
-        <button type="button" onClick={() => void runPreview()} disabled={busy || !text.trim()}>
+        <button type="button" onClick={() => void runPreview(text, mapping)} disabled={busy || !text.trim()}>
           読み取り結果を確認
         </button>
       </div>

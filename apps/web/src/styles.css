@@ -508,6 +508,7 @@ select {
 
 button,
 .file {
+  position: relative;
   font: inherit;
   border: 1px solid var(--rule);
   background: var(--surface);
@@ -534,10 +535,16 @@ button.link {
   text-decoration: underline;
 }
 .file input {
+  /* Visually hidden but still focusable and announced; kept inside its label so it
+     cannot widen the page on small screens. */
   position: absolute;
-  opacity: 0;
+  inset: 0;
   width: 1px;
   height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
 }
 .file:focus-within {
   outline: 3px solid var(--brass);
@@ -555,6 +562,7 @@ legend {
   margin: 16px 0 8px;
 }
 .chip {
+  position: relative;
   display: inline-flex;
   align-items: center;
   margin: 0 8px 8px 0;
@@ -565,7 +573,15 @@ legend {
   background: var(--surface);
 }
 .chip input {
+  /* Visually hidden but still focusable and announced; kept inside its label so it
+     cannot widen the page on small screens. */
   position: absolute;
+  inset: 0;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
   opacity: 0;
 }
 .chip:focus-within {
