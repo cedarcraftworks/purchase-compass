@@ -14,7 +14,7 @@ export class AppError extends Error {
 
   toProblem(): Problem {
     return {
-      type: `https://github.com/kaisei467/purchase-compass/blob/main/docs/errors.md#${this.code}`,
+      type: `https://github.com/cedarcraftworks/purchase-compass/blob/main/docs/errors.md#${this.code}`,
       title: this.title,
       status: this.status,
       code: this.code,

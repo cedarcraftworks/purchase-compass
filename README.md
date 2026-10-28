@@ -2,15 +2,15 @@
 
 **English** | [日本語](README.ja.md)
 
-[![CI](https://github.com/kaisei467/purchase-compass/actions/workflows/ci.yml/badge.svg)](https://github.com/kaisei467/purchase-compass/actions/workflows/ci.yml)
-[![Live demo](https://img.shields.io/badge/demo-live-2f6f5e)](https://kaisei467.github.io/purchase-compass/)
+[![CI](https://github.com/cedarcraftworks/purchase-compass/actions/workflows/ci.yml/badge.svg)](https://github.com/cedarcraftworks/purchase-compass/actions/workflows/ci.yml)
+[![Live demo](https://img.shields.io/badge/demo-live-2f6f5e)](https://cedarcraftworks.github.io/purchase-compass/)
 ![TypeScript](https://img.shields.io/badge/TypeScript-API%20%26%20web-3178c6)
 ![Python](https://img.shields.io/badge/Python-analysis-3776ab)
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
 **Your purchases from Amazon, Rakuten, Mercari and real shops in one place: how you shop, written in plain sentences, and recommendations that always say why.**
 
-**[▶ Open the live demo](https://kaisei467.github.io/purchase-compass/)** — no sign-up; it shows six months of a fictional student's purchases ([how that data was made](docs/sample-data.md)).
+**[▶ Open the live demo](https://cedarcraftworks.github.io/purchase-compass/)** — no sign-up; it shows six months of a fictional student's purchases ([how that data was made](docs/sample-data.md)).
 
 ![A 20-second tour: spending compass, findings, buy-again list, recommendations with reasons, recurring charges](docs/images/tour.gif)
 
@@ -22,7 +22,7 @@
 
 ## For reviewers: a 3-minute tour
 
-1. **Try it**: open the [live demo](https://kaisei467.github.io/purchase-compass/) and switch between 傾向 (trends), おすすめ (recommendations) and 気づき (signals). On データ (data), download a shop's sample CSV and load it to see the importer read it.
+1. **Try it**: open the [live demo](https://cedarcraftworks.github.io/purchase-compass/) and switch between 傾向 (trends), おすすめ (recommendations) and 気づき (signals). On データ (data), download a shop's sample CSV and load it to see the importer read it.
 2. **See the shape**: the [architecture](#architecture) diagram and the reasons behind each [technology choice](#tech-stack-and-why).
 3. **Read the core logic**: [`recommend.py`](services/analyzer/compass_analyzer/recommend.py) (how products are picked and explained) and [`importers/`](packages/shared/src/importers/) (turning five shops' formats into one).
 4. **Check the safety nets**: the [contract test](apps/api/test/contract.test.ts), the [import de-duplication and analysis cache](apps/api/src/repository.ts) and the [CI workflow](.github/workflows/ci.yml).
@@ -106,7 +106,7 @@ The full reasoning, including trade-offs, is in [docs/technical-notes.md](docs/t
 Requirements: Docker.
 
 ```bash
-git clone https://github.com/kaisei467/purchase-compass.git
+git clone https://github.com/cedarcraftworks/purchase-compass.git
 cd purchase-compass
 docker compose up --build
 ```

@@ -2,15 +2,15 @@
 
 [English](README.md) | **日本語**
 
-[![CI](https://github.com/kaisei467/purchase-compass/actions/workflows/ci.yml/badge.svg)](https://github.com/kaisei467/purchase-compass/actions/workflows/ci.yml)
-[![Live demo](https://img.shields.io/badge/demo-live-2f6f5e)](https://kaisei467.github.io/purchase-compass/)
+[![CI](https://github.com/cedarcraftworks/purchase-compass/actions/workflows/ci.yml/badge.svg)](https://github.com/cedarcraftworks/purchase-compass/actions/workflows/ci.yml)
+[![Live demo](https://img.shields.io/badge/demo-live-2f6f5e)](https://cedarcraftworks.github.io/purchase-compass/)
 ![TypeScript](https://img.shields.io/badge/TypeScript-API%20%26%20web-3178c6)
 ![Python](https://img.shields.io/badge/Python-analysis-3776ab)
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
 **Amazon・楽天・メルカリ・お店での買い物を1か所に集め、自分の買い方を文章で示し、その傾向をもとに理由付きでおすすめするWebアプリです。**
 
-**[▶ デモを開く](https://kaisei467.github.io/purchase-compass/)**（登録不要。架空の大学生の約半年分の購入履歴を表示します。[データの作り方](docs/sample-data.md)）
+**[▶ デモを開く](https://cedarcraftworks.github.io/purchase-compass/)**（登録不要。架空の大学生の約半年分の購入履歴を表示します。[データの作り方](docs/sample-data.md)）
 
 ![20秒のツアー：支出のコンパス、傾向、買い時、理由付きのおすすめ、定期的な支払い](docs/images/tour.gif)
 
@@ -22,7 +22,7 @@
 
 ## 3分で見るためのガイド
 
-1. **触ってみる**：[デモ](https://kaisei467.github.io/purchase-compass/)で「傾向」「おすすめ」「気づき」を切り替えてください。「データ」では、お店ごとの見本CSVをダウンロードして、取り込みの読み取り結果まで試せます。
+1. **触ってみる**：[デモ](https://cedarcraftworks.github.io/purchase-compass/)で「傾向」「おすすめ」「気づき」を切り替えてください。「データ」では、お店ごとの見本CSVをダウンロードして、取り込みの読み取り結果まで試せます。
 2. **全体像をつかむ**：[構成](#構成)と[技術選定の理由](#技術選定と理由)を見てください。
 3. **中心のコードを読む**：
    - [`recommend.py`](services/analyzer/compass_analyzer/recommend.py)：商品の選び方と理由の出し方
@@ -121,7 +121,7 @@ flowchart LR
 必要なのはDockerだけです。
 
 ```bash
-git clone https://github.com/kaisei467/purchase-compass.git
+git clone https://github.com/cedarcraftworks/purchase-compass.git
 cd purchase-compass
 docker compose up --build
 ```
