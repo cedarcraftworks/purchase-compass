@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit && tsc --noEmit -p test",
+    "test": "tsx --tsconfig test/tsconfig.json --test 'test/**/*.test.tsx'"
   },
   "dependencies": {
     "@purchase-compass/shared": "*",

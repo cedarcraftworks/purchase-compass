@@ -66,8 +66,10 @@ jobs:
         run: npm run lint
       - name: Type check
         run: npm run typecheck
-      - name: Test (includes the contract test)
+      - name: Test API (includes the contract test)
         run: npm test --workspace=@purchase-compass/api
+      - name: Test web (components and demo data)
+        run: npm test --workspace=@purchase-compass/web
       - name: Build
         run: npm run build
 
