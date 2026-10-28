@@ -18,7 +18,7 @@
 
 - **Two languages, one contract.** The UI and API are TypeScript; the analysis is Python. The analyzer's real responses are recorded and validated against the TypeScript schemas in CI, so a field renamed on one side fails the build, not the dashboard.
 - **Explainable by design.** Every finding, recommendation and warning shows its reason: *"you usually rebuy this every 24 days; it has been 6, so about 18 to go"*, *"late at night +30, 4.8× your usual spend +30"*. No black box, so every rule is also unit-tested.
-- **Built like a team project.** 76 automated tests (API tests against a real PostgreSQL), a CI pipeline (Python → contract → TypeScript → Docker), deployment gated on green CI, and [eight written design decisions](docs/adr/README.md).
+- **Built like a team project.** 83 automated tests (API tests against a real PostgreSQL, browser tests of the public demo), a CI pipeline (Python → contract → TypeScript → end-to-end → Docker), deployment gated on green CI, and [eight written design decisions](docs/adr/README.md).
 
 ## For reviewers: a 3-minute tour
 
@@ -141,13 +141,14 @@ npm run dev:web      # http://localhost:5173
 cd services/analyzer && pytest            # 35 tests: analysis rules, recommender, Rakuten client, HTTP, contract
 npm test -w @purchase-compass/api         # 26 tests: importers, API, caching, demo mode, contract
 npm test -w @purchase-compass/web         # 15 tests: components, demo data and sample files against the contract
+npm run test:e2e -w @purchase-compass/web # 7 tests: the built public demo in Chromium (Playwright)
 ```
 
 The API tests need PostgreSQL (`TEST_DATABASE_URL`, default `postgres://postgres:postgres@localhost:5432/purchase_compass_test`).
 
 | Workflow | When | What |
 | --- | --- | --- |
-| [CI](.github/workflows/ci.yml) | Every push and pull request | Python lint + tests (regenerating the contract) → TypeScript lint, type check, tests against that contract, build → Docker image builds |
+| [CI](.github/workflows/ci.yml) | Every push and pull request | Python lint + tests (regenerating the contract) → TypeScript lint, type check, tests against that contract, build; the public demo tested in a browser; Docker image builds |
 | [Demo](.github/workflows/pages.yml) | Push to `main` touching the web app | Builds the server-less demo and publishes it to GitHub Pages |
 | [Deploy](.github/workflows/deploy.yml) | After CI succeeds on `main` | Triggers the full-stack deployment (see [docs/deploy.md](docs/deploy.md)) |
 

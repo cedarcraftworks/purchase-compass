@@ -18,7 +18,7 @@
 
 - **2つの言語を1つの契約でつなぐ**：画面とAPIはTypeScript、分析はPythonです。分析サービスの実際の応答を記録し、CIでTypeScript側のスキーマと照合します。片方だけ項目名を変えると、画面が壊れる前にCIが失敗します。
 - **理由を必ず見せる**：傾向・おすすめ・警告のすべてに根拠を表示します（「いつもは約24日ごとに購入。前回から6日経ち、あと約18日で買い時」「深夜 +30点、いつもの4.8倍の金額 +30点」）。ブラックボックスにしないので、どのルールもテストで確かめられます。
-- **チーム開発を前提にした作り**：自動テスト76件（APIは本物のPostgreSQLで検証）、CI（Python → 契約 → TypeScript → Docker）、CIが通ったときだけ動くデプロイ、[文書化した設計判断8件](docs/adr/README.md)を備えています。
+- **チーム開発を前提にした作り**：自動テスト83件（APIは本物のPostgreSQL、公開デモは実際のブラウザで検証）、CI（Python → 契約 → TypeScript → ブラウザでの通し確認 → Docker）、CIが通ったときだけ動くデプロイ、[文書化した設計判断8件](docs/adr/README.md)を備えています。
 
 ## 3分で見るためのガイド
 
@@ -137,11 +137,12 @@ docker compose up --build
 cd services/analyzer && pytest            # 35件：分析ルール、おすすめ、楽天API、HTTP、契約
 npm test -w @purchase-compass/api         # 26件：取り込み、API、キャッシュ、デモモード、契約
 npm test -w @purchase-compass/web         # 15件：画面の描画、公開デモのデータと見本CSVが契約どおりか
+npm run test:e2e -w @purchase-compass/web # 7件：公開デモをChromiumで通しで操作（Playwright）
 ```
 
 | ワークフロー | いつ | 何をするか |
 | --- | --- | --- |
-| [CI](.github/workflows/ci.yml) | プッシュ・プルリクエストごと | Pythonのlintとテスト（契約を再生成）→ TypeScriptのlint・型チェック・テスト・ビルド → Dockerのビルド |
+| [CI](.github/workflows/ci.yml) | プッシュ・プルリクエストごと | Pythonのlintとテスト（契約を再生成）→ TypeScriptのlint・型チェック・テスト・ビルド、公開デモのブラウザテスト、Dockerのビルド |
 | [Demo](.github/workflows/pages.yml) | 画面の変更がmainに入ったとき | サーバー不要のデモを作り、GitHub Pagesに公開 |
 | [Deploy](.github/workflows/deploy.yml) | mainでCIが通った後 | フル構成のデプロイを起動（[手順](docs/deploy.md)） |
 
