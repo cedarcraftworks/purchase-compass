@@ -10,7 +10,7 @@
 
 **Your purchases from Amazon, Rakuten, Mercari and real shops in one place: how you shop, written in plain sentences, and recommendations that always say why.**
 
-**[▶ Open the live demo](https://kaisei467.github.io/purchase-compass/)** — no sign-up; it shows six months of a fictional student's purchases.
+**[▶ Open the live demo](https://kaisei467.github.io/purchase-compass/)** — no sign-up; it shows six months of a fictional student's purchases ([how that data was made](docs/sample-data.md)).
 
 ![A 20-second tour: spending compass, findings, buy-again list, recommendations with reasons, recurring charges](docs/images/tour.gif)
 
@@ -18,13 +18,13 @@
 
 - **Two languages, one contract.** The UI and API are TypeScript; the analysis is Python. The analyzer's real responses are recorded and validated against the TypeScript schemas in CI, so a field renamed on one side fails the build, not the dashboard.
 - **Explainable by design.** Every finding, recommendation and warning shows its reason: *"you usually rebuy this every 24 days; it has been 6, so about 18 to go"*, *"late at night +30, 4.8× your usual spend +30"*. No black box, so every rule is also unit-tested.
-- **Built like a team project.** 61 automated tests against a real PostgreSQL, a CI pipeline (Python → contract → TypeScript → Docker) and deployment gated on green CI.
+- **Built like a team project.** 76 automated tests (API tests against a real PostgreSQL), a CI pipeline (Python → contract → TypeScript → Docker), deployment gated on green CI, and [eight written design decisions](docs/adr/README.md).
 
 ## For reviewers: a 3-minute tour
 
-1. **Try it**: open the [live demo](https://kaisei467.github.io/purchase-compass/) and switch between 傾向 (trends), おすすめ (recommendations) and 気づき (signals).
+1. **Try it**: open the [live demo](https://kaisei467.github.io/purchase-compass/) and switch between 傾向 (trends), おすすめ (recommendations) and 気づき (signals). On データ (data), download a shop's sample CSV and load it to see the importer read it.
 2. **See the shape**: the [architecture](#architecture) diagram and the reasons behind each [technology choice](#tech-stack-and-why).
-3. **Read the core logic**: [`recommend.py`](services/analyzer/compass_analyzer/recommend.py) (how products are picked and explained) and [`importers/`](apps/api/src/importers/) (turning five shops' formats into one).
+3. **Read the core logic**: [`recommend.py`](services/analyzer/compass_analyzer/recommend.py) (how products are picked and explained) and [`importers/`](packages/shared/src/importers/) (turning five shops' formats into one).
 4. **Check the safety nets**: the [contract test](apps/api/test/contract.test.ts), the [import de-duplication and analysis cache](apps/api/src/repository.ts) and the [CI workflow](.github/workflows/ci.yml).
 
 ## Contents
@@ -78,7 +78,7 @@ flowchart LR
 | Tests | pytest, Node's built-in test runner | Standard tools; integration tests run against a real PostgreSQL. |
 | CI/CD | GitHub Actions, Docker | CI on every push; deployment only after CI passes on `main`. |
 
-The full reasoning, including trade-offs, is in [docs/technical-notes.md](docs/technical-notes.md) (Japanese).
+The full reasoning, including trade-offs, is in [docs/technical-notes.md](docs/technical-notes.md), and each major decision has its own record in [docs/adr/](docs/adr/README.md) (both in Japanese).
 
 ## Engineering challenges
 
@@ -87,6 +87,8 @@ The full reasoning, including trade-offs, is in [docs/technical-notes.md](docs/t
 **Keeping two languages in sync.** Splitting the system gave me a new failure mode: one side renaming a field. The Python tests write the analyzer's real responses to [`contract/`](contract/); the TypeScript tests validate them with the same zod schemas the app uses at runtime; CI regenerates them on every run.
 
 **Imports you can repeat safely.** Each purchase gets a key from its shop, time, title, amount and quantity, enforced by a unique index, and a whole file is saved in one transaction. Re-importing adds nothing; a failed import saves nothing.
+
+**One importer, two places.** To let reviewers try the importer on the server-less demo, I moved it from the API into the shared package. It is pure TypeScript with no I/O, so the API and the browser now run the same code, and a test checks that every downloadable sample imports cleanly.
 
 **Being honest about data access.** Amazon's product API requires an Associates account with ongoing sales, and Mercari has no public product API. Rather than scrape them, the app links to their search pages, and product sources sit behind one small interface so a new one is a single class.
 
@@ -131,6 +133,7 @@ npm run dev:web      # http://localhost:5173
 ```bash
 cd services/analyzer && pytest            # 35 tests: analysis rules, recommender, Rakuten client, HTTP, contract
 npm test -w @purchase-compass/api         # 26 tests: importers, API, caching, demo mode, contract
+npm test -w @purchase-compass/web         # 15 tests: components, demo data and sample files against the contract
 ```
 
 The API tests need PostgreSQL (`TEST_DATABASE_URL`, default `postgres://postgres:postgres@localhost:5432/purchase_compass_test`).
@@ -148,12 +151,12 @@ apps/
   api/            TypeScript API: import pipeline, storage, analysis cache
   web/            React app (also builds the static GitHub Pages demo)
 packages/
-  shared/         zod schemas shared by web and API (the TypeScript side of the contract)
+  shared/         zod schemas and the importer, shared by web and API
 services/
   analyzer/       Python service: categorisation, trends, habits, recommendations
 contract/         Recorded analyzer responses and OpenAPI document, checked in CI
 samples/          Demo purchase history in each shop's own export format
-docs/             Technical notes (Japanese), deployment, error codes
+docs/             Technical notes, design decisions (adr/), sample data, deployment, error codes
 ```
 
 ## Data sources and their limits

@@ -10,7 +10,7 @@
 
 **Amazon・楽天・メルカリ・お店での買い物を1か所に集め、自分の買い方を文章で示し、その傾向をもとに理由付きでおすすめするWebアプリです。**
 
-**[▶ デモを開く](https://kaisei467.github.io/purchase-compass/)**（登録不要。架空の大学生の約半年分の購入履歴を表示します）
+**[▶ デモを開く](https://kaisei467.github.io/purchase-compass/)**（登録不要。架空の大学生の約半年分の購入履歴を表示します。[データの作り方](docs/sample-data.md)）
 
 ![20秒のツアー：支出のコンパス、傾向、買い時、理由付きのおすすめ、定期的な支払い](docs/images/tour.gif)
 
@@ -18,15 +18,15 @@
 
 - **2つの言語を1つの契約でつなぐ**：画面とAPIはTypeScript、分析はPythonです。分析サービスの実際の応答を記録し、CIでTypeScript側のスキーマと照合します。片方だけ項目名を変えると、画面が壊れる前にCIが失敗します。
 - **理由を必ず見せる**：傾向・おすすめ・警告のすべてに根拠を表示します（「いつもは約24日ごとに購入。前回から6日経ち、あと約18日で買い時」「深夜 +30点、いつもの4.8倍の金額 +30点」）。ブラックボックスにしないので、どのルールもテストで確かめられます。
-- **チーム開発を前提にした作り**：本物のPostgreSQLに対する自動テスト61件、CI（Python → 契約 → TypeScript → Docker）、CIが通ったときだけ動くデプロイを備えています。
+- **チーム開発を前提にした作り**：自動テスト76件（APIは本物のPostgreSQLで検証）、CI（Python → 契約 → TypeScript → Docker）、CIが通ったときだけ動くデプロイ、[文書化した設計判断8件](docs/adr/README.md)を備えています。
 
 ## 3分で見るためのガイド
 
-1. **触ってみる**：[デモ](https://kaisei467.github.io/purchase-compass/)で「傾向」「おすすめ」「気づき」を切り替えてください。
+1. **触ってみる**：[デモ](https://kaisei467.github.io/purchase-compass/)で「傾向」「おすすめ」「気づき」を切り替えてください。「データ」では、お店ごとの見本CSVをダウンロードして、取り込みの読み取り結果まで試せます。
 2. **全体像をつかむ**：[構成](#構成)と[技術選定の理由](#技術選定と理由)を見てください。
 3. **中心のコードを読む**：
    - [`recommend.py`](services/analyzer/compass_analyzer/recommend.py)：商品の選び方と理由の出し方
-   - [`importers/`](apps/api/src/importers/)：5種類の形式を1つにまとめる処理
+   - [`importers/`](packages/shared/src/importers/)：5種類の形式を1つにまとめる処理
 4. **安全装置を確認する**：
    - [契約テスト](apps/api/test/contract.test.ts)
    - [重複排除と分析キャッシュ](apps/api/src/repository.ts)
@@ -81,7 +81,7 @@ flowchart LR
 | テスト | pytest、Node標準のテストランナー | 各言語の標準です。統合テストは本物のPostgreSQLで動かします。 |
 | CI/CD | GitHub Actions、Docker | プッシュごとにCIが走り、mainでCIが通ったときだけデプロイします。 |
 
-トレードオフを含む詳しい理由は [技術解説](docs/technical-notes.md) にまとめています。
+トレードオフを含む詳しい理由は [技術解説](docs/technical-notes.md) に、判断ごとの記録は [設計判断の記録（ADR）](docs/adr/README.md) にまとめています。
 
 ## 工夫した技術的課題
 
@@ -96,6 +96,10 @@ flowchart LR
 **何度やり直しても安全な取り込み**
 - お店・日時・商品名・金額・数量からキーを作り、一意制約で保証しています。
 - ファイル1つを1つのトランザクションで保存します。再取り込みでは何も増えず、失敗したら何も保存されません。
+
+**1つの取り込み処理を2か所で使う**
+- サーバーのない公開デモでも取り込みを試せるよう、取り込み処理をAPIから共有パッケージに移しました。
+- 入出力を持たない純粋なTypeScriptなので、APIとブラウザが同じコードを動かします。ダウンロードできる見本がすべて問題なく読めることもテストで確かめています。
 
 **データの取り方に誠実である**
 - AmazonのAPIは継続的な売上実績が条件で、メルカリには一般向けAPIがありません。
@@ -125,6 +129,7 @@ docker compose up --build
 ```bash
 cd services/analyzer && pytest            # 35件：分析ルール、おすすめ、楽天API、HTTP、契約
 npm test -w @purchase-compass/api         # 26件：取り込み、API、キャッシュ、デモモード、契約
+npm test -w @purchase-compass/web         # 15件：画面の描画、公開デモのデータと見本CSVが契約どおりか
 ```
 
 | ワークフロー | いつ | 何をするか |
@@ -132,6 +137,25 @@ npm test -w @purchase-compass/api         # 26件：取り込み、API、キャ�
 | [CI](.github/workflows/ci.yml) | プッシュ・プルリクエストごと | Pythonのlintとテスト（契約を再生成）→ TypeScriptのlint・型チェック・テスト・ビルド → Dockerのビルド |
 | [Demo](.github/workflows/pages.yml) | 画面の変更がmainに入ったとき | サーバー不要のデモを作り、GitHub Pagesに公開 |
 | [Deploy](.github/workflows/deploy.yml) | mainでCIが通った後 | フル構成のデプロイを起動（[手順](docs/deploy.md)） |
+
+## フォルダ構成とドキュメント
+
+```
+apps/api/            TypeScriptのAPI：保存、分析キャッシュ、デモモード
+apps/web/            React の画面（公開デモの静的版もここから作る）
+packages/shared/     画面とAPIで共有する型（zod）と取り込み処理
+services/analyzer/   Pythonの分析サービス：分類、傾向、習慣、おすすめ
+contract/            分析サービスの実際の応答の記録（CIで照合）
+samples/             デモ用の架空の購入履歴（お店ごとの形式）
+```
+
+| 文書 | 内容 |
+| --- | --- |
+| [技術解説](docs/technical-notes.md) | 構成、技術選定、分析ロジック、品質の全体像 |
+| [設計判断の記録（ADR）](docs/adr/README.md) | 主要な判断8件の理由・他の案・受け入れたこと |
+| [デモ用の購入データについて](docs/sample-data.md) | データが架空であること、作り方、デモ結果の読み方 |
+| [デプロイ手順](docs/deploy.md) | フル構成を公開する方法 |
+| [エラー一覧](docs/errors.md) | APIが返すエラーの種類 |
 
 ## データの取り込み元と制約
 
