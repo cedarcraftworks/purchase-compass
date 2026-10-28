@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "./api";
 import { useResource } from "./hooks";
 import { Data } from "./pages/Data";
@@ -14,13 +14,13 @@ const TABS = [
 ] as const;
 type Tab = (typeof TABS)[number]["id"];
 
-const initialTab = (): Tab => {
+const tabFromHash = (): Tab => {
   const hash = window.location.hash.slice(1);
   return TABS.some((t) => t.id === hash) ? (hash as Tab) : "trends";
 };
 
 export function App() {
-  const [tab, setTab] = useState<Tab>(initialTab);
+  const [tab, setTab] = useState<Tab>(tabFromHash);
   // Bumped after every import or edit so each view refetches.
   const [version, setVersion] = useState(0);
   const meta = useResource(api.meta, version);
@@ -28,9 +28,16 @@ export function App() {
   const recs = useResource(api.recommendations, version);
   const changed = () => setVersion((v) => v + 1);
 
+  // Each tab has its own URL (#trends, #recommend, ...): links can point at a
+  // tab, and the browser's back and forward buttons move between tabs.
+  useEffect(() => {
+    const sync = () => setTab(tabFromHash());
+    window.addEventListener("hashchange", sync);
+    return () => window.removeEventListener("hashchange", sync);
+  }, []);
+
   const go = (id: Tab) => {
-    setTab(id);
-    window.history.replaceState(null, "", `#${id}`);
+    if (id !== tab) window.location.hash = id;
   };
 
   const empty = meta.data?.purchaseCount === 0;
