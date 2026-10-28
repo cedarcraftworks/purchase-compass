@@ -85,7 +85,7 @@ flowchart LR
 | Tests | pytest, Node's built-in test runner | Standard tools; integration tests run against a real PostgreSQL. |
 | CI/CD | GitHub Actions, Docker | CI on every push; deployment only after CI passes on `main`. |
 
-The full reasoning, including trade-offs, is in [docs/technical-notes.md](docs/technical-notes.md), and each major decision has its own record in [docs/adr/](docs/adr/README.md) (both in Japanese).
+The full reasoning, including trade-offs, is in [docs/technical-notes.md](docs/technical-notes.md), each major decision has its own record in [docs/adr/](docs/adr/README.md), and the problems found while building it are in the [development log](docs/dev-log.md) (all in Japanese).
 
 ## Engineering challenges
 
