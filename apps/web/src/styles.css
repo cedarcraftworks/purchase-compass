@@ -664,3 +664,15 @@ legend {
     overflow-x: auto;
   }
 }
+
+.sample-link {
+  margin-left: 12px;
+  white-space: nowrap;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}

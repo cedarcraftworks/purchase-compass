@@ -1,11 +1,11 @@
 import { Category, ImportRequest, NewPurchase } from "@purchase-compass/shared";
+import { parseImport } from "@purchase-compass/shared/importers";
 import { type Context, Hono, type MiddlewareHandler } from "hono";
 import { cors } from "hono/cors";
 import { z } from "zod";
 import type { AnalyzerClient } from "./analyzer-client.js";
 import type { Sql } from "./db.js";
 import { AppError, errors } from "./http/errors.js";
-import { parseImport } from "./importers/index.js";
 import type { Logger } from "./logger.js";
 import type { Repository } from "./repository.js";
 

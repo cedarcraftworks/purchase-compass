@@ -11,21 +11,15 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import type { ImportRow, Source } from "@purchase-compass/shared";
+import { type ImportRow, SAMPLE_FILE, SOURCES, type Source } from "@purchase-compass/shared";
+import { parseImport } from "@purchase-compass/shared/importers";
 import { loadConfig } from "./config.js";
 import { createDb, type Sql } from "./db.js";
-import { parseImport } from "./importers/index.js";
 import { createRepository } from "./repository.js";
 
 const DEFAULT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../samples");
 
-export const SAMPLE_FILES: { file: string; source: Source }[] = [
-  { file: "amazon_Retail.OrderHistory.1.csv", source: "amazon" },
-  { file: "rakuten_purchase_history.tsv", source: "rakuten" },
-  { file: "mercari_purchases.csv", source: "mercari" },
-  { file: "store_receipts.csv", source: "store" },
-  { file: "card_statement.csv", source: "other" },
-];
+export const SAMPLE_FILES = SOURCES.map((source) => ({ source, file: SAMPLE_FILE[source] }));
 
 export async function seedSamples(sql: Sql, dir = DEFAULT_DIR, now = new Date()): Promise<number> {
   const parsed: { source: Source; rows: ImportRow[]; total: number; format: string }[] = [];

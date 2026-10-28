@@ -19,7 +19,10 @@ from pathlib import Path
 JST = timezone(timedelta(hours=9))
 START = datetime(2026, 4, 20, tzinfo=JST)
 END = datetime(2026, 10, 20, tzinfo=JST)
-OUT = Path(__file__).resolve().parents[3] / "samples"
+ROOT = Path(__file__).resolve().parents[3]
+OUT = ROOT / "samples"
+#: The web app offers the same files for download from its import screen.
+WEB_COPY = ROOT / "apps" / "web" / "public" / "samples"
 rng = random.Random(20261027)
 
 
@@ -202,11 +205,12 @@ for name, amount, offset in [
 
 
 def write(name: str, header: list[str], rows: list[list], delimiter: str = ",") -> None:
-    OUT.mkdir(exist_ok=True)
-    with open(OUT / name, "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f, delimiter=delimiter)
-        w.writerow(header)
-        w.writerows(rows)
+    for folder in (OUT, WEB_COPY):
+        folder.mkdir(parents=True, exist_ok=True)
+        with open(folder / name, "w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f, delimiter=delimiter)
+            w.writerow(header)
+            w.writerows(rows)
 
 
 def key(r: dict) -> datetime:

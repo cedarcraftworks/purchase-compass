@@ -8,7 +8,7 @@
  * That keeps the importer useful without browser extensions that would need
  * the user's shop passwords.
  */
-import type { ColumnMapping, ImportPreview, ImportRow } from "@purchase-compass/shared";
+import type { ColumnMapping, ImportPreview, ImportRow } from "../index.js";
 import { parseDelimited, type Table } from "./csv.js";
 import { parseDate, parseQuantity, parseYen } from "./normalize.js";
 
@@ -132,3 +132,6 @@ function convertRows(table: Table, mapping: ColumnMapping, amazon: boolean, issu
   });
   return out;
 }
+
+export { parseDelimited } from "./csv.js";
+export { parseDate, parseQuantity, parseYen } from "./normalize.js";

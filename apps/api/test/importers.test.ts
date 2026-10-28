@@ -3,9 +3,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
-import { parseDelimited } from "../src/importers/csv.js";
-import { guessMapping, parseImport } from "../src/importers/index.js";
-import { parseDate, parseYen } from "../src/importers/normalize.js";
+import { guessMapping, parseDate, parseDelimited, parseImport, parseYen } from "@purchase-compass/shared/importers";
 
 const SAMPLES = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../../samples");
 const sample = (file: string) => readFile(path.join(SAMPLES, file), "utf8");

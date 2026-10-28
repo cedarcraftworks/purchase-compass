@@ -9,7 +9,8 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
-import { Insights, Meta, Purchase, Recommendations } from "@purchase-compass/shared";
+import { Insights, Meta, Purchase, Recommendations, SAMPLE_FILE, SOURCES } from "@purchase-compass/shared";
+import { parseImport } from "@purchase-compass/shared/importers";
 import { renderToStaticMarkup } from "react-dom/server";
 import { z } from "zod";
 import { Compass } from "../src/components/Compass";
@@ -81,4 +82,23 @@ describe("pages", () => {
     assert.ok(html.includes(top.title));
     for (const r of top.reasons) assert.ok(html.includes(r.label), `missing reason: ${r.label}`);
   });
+});
+
+describe("sample files offered for download", () => {
+  const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
+
+  for (const source of SOURCES) {
+    const file = SAMPLE_FILE[source];
+    it(`${file} is identical to /samples and imports without problems`, () => {
+      const offered = readFileSync(path.join(ROOT, "apps/web/public/samples", file), "utf8");
+      assert.equal(
+        offered,
+        readFileSync(path.join(ROOT, "samples", file), "utf8"),
+        "run: cp samples/* apps/web/public/samples/",
+      );
+      const { preview, rows } = parseImport(offered);
+      assert.deepEqual(preview.issues, []);
+      assert.equal(rows.length > 0, true);
+    });
+  }
 });

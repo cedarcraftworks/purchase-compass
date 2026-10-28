@@ -4,6 +4,7 @@ import {
   type ColumnMapping,
   type ImportPreview,
   type Purchase,
+  SAMPLE_FILE,
   SOURCE_LABEL,
   SOURCES,
   type Source,
@@ -35,7 +36,7 @@ export function Data({ demoMode, onChanged, version }: { demoMode: boolean; onCh
     <>
       {demoMode && (
         <p className="notice">
-          公開デモのため、データの登録と削除はできません。手元で起動すると、ご自身の購入履歴を取り込めます。
+          公開デモのため、データの登録と削除はできません。見本のCSVをダウンロードして読み取り結果の確認までは試せます。手元で起動すると、ご自身の購入履歴を取り込めます。
         </p>
       )}
       <Importer disabled={demoMode} onImported={onChanged} />
@@ -108,7 +109,7 @@ function Importer({ disabled, onImported }: { disabled: boolean; onImported: () 
   return (
     <section className="section">
       <h2>購入履歴を取り込む</h2>
-      <fieldset className="sources" disabled={disabled}>
+      <fieldset className="sources">
         <legend>どこで買ったものですか</legend>
         {SOURCES.map((s) => (
           <label key={s} className={s === source ? "chip chip-on" : "chip"}>
@@ -117,27 +118,26 @@ function Importer({ disabled, onImported }: { disabled: boolean; onImported: () 
           </label>
         ))}
       </fieldset>
-      <p className="muted">{SOURCE_HINT[source]}</p>
+      <p className="muted">
+        {SOURCE_HINT[source]}
+        <a className="sample-link" href={`${import.meta.env.BASE_URL}samples/${SAMPLE_FILE[source]}`} download>
+          {SOURCE_LABEL[source]}の見本をダウンロード
+        </a>
+      </p>
       <div className="import-inputs">
         <label className="file">
           CSVファイルを選ぶ
-          <input
-            type="file"
-            accept=".csv,.tsv,.txt"
-            disabled={disabled}
-            onChange={(e) => void onFile(e.target.files?.[0])}
-          />
+          <input type="file" accept=".csv,.tsv,.txt" onChange={(e) => void onFile(e.target.files?.[0])} />
         </label>
         <span className="muted">または</span>
         <textarea
           aria-label="表を貼り付ける"
           placeholder="表をここに貼り付ける（1行目は列名）"
           value={text}
-          disabled={disabled}
           onChange={(e) => setText(e.target.value)}
           rows={4}
         />
-        <button type="button" onClick={() => void runPreview()} disabled={disabled || busy || !text.trim()}>
+        <button type="button" onClick={() => void runPreview()} disabled={busy || !text.trim()}>
           読み取り結果を確認
         </button>
       </div>
@@ -200,14 +200,17 @@ function Importer({ disabled, onImported }: { disabled: boolean; onImported: () 
               </tbody>
             </table>
           )}
-          <button
-            type="button"
-            className="primary"
-            onClick={() => void save()}
-            disabled={busy || preview.rows.length === 0}
-          >
-            {preview.totalRows}行を取り込む
-          </button>
+          <div className="actions">
+            <button
+              type="button"
+              className="primary"
+              onClick={() => void save()}
+              disabled={disabled || busy || preview.rows.length === 0}
+            >
+              取り込む
+            </button>
+            {disabled && <span className="muted">公開デモでは保存できません。手元で起動すると取り込めます。</span>}
+          </div>
         </div>
       )}
       {message && <p className={message.kind === "ok" ? "success" : "error"}>{message.text}</p>}

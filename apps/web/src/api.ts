@@ -9,6 +9,7 @@ import type {
   Recommendations,
   Source,
 } from "@purchase-compass/shared";
+import { parseImport } from "@purchase-compass/shared/importers";
 
 /** An error the API explained (RFC 9457 problem details); `detail` is written for the user. */
 export class ApiError extends Error {
@@ -66,8 +67,12 @@ export const api = {
   purchases: () => request<Purchase[]>("GET", "/api/purchases"),
   addPurchase: (p: NewPurchase) => request<Purchase>("POST", "/api/purchases", p),
   deletePurchase: (id: string) => request<void>("DELETE", `/api/purchases/${id}`),
-  previewImport: (source: Source, text: string, mapping?: ColumnMapping) =>
-    request<ImportPreview>("POST", "/api/imports/preview", { source, text, mapping }),
+  // The preview is a dry run of a pure function, so the static demo runs the very
+  // same importer in the browser and visitors can try it without a server.
+  previewImport: async (source: Source, text: string, mapping?: ColumnMapping): Promise<ImportPreview> =>
+    STATIC_DEMO
+      ? parseImport(text, mapping).preview
+      : request<ImportPreview>("POST", "/api/imports/preview", { source, text, mapping }),
   runImport: (source: Source, text: string, mapping?: ColumnMapping) =>
     request<ImportResult>("POST", "/api/imports", { source, text, mapping }),
 };

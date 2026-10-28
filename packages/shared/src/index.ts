@@ -222,3 +222,12 @@ export const Problem = z.object({
   detail: z.string().optional(),
 });
 export type Problem = z.infer<typeof Problem>;
+
+/** The sample purchase history for each shop, in that shop's own format (see /samples). */
+export const SAMPLE_FILE: Record<Source, string> = {
+  amazon: "amazon_Retail.OrderHistory.1.csv",
+  rakuten: "rakuten_purchase_history.tsv",
+  mercari: "mercari_purchases.csv",
+  store: "store_receipts.csv",
+  other: "card_statement.csv",
+};
