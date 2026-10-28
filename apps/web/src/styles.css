@@ -144,8 +144,18 @@ nav {
   border-radius: var(--radius);
   font-size: 0.9rem;
 }
+.demo-banner p {
+  margin: 0;
+}
 .demo-banner a {
   margin-left: 8px;
+}
+.demo-banner .demo-guide {
+  color: var(--muted);
+  margin-top: 4px;
+}
+.demo-banner .demo-guide a {
+  margin: 0 2px;
 }
 
 main {
@@ -674,5 +684,12 @@ legend {
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.load-error {
+  padding: 32px 0;
+}
+.load-error button {
   margin-top: 12px;
 }

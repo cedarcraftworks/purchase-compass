@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "./api";
 import { useResource } from "./hooks";
+import { REPO_URL, SAMPLE_DATA_DOC_URL } from "./links";
 import { Data } from "./pages/Data";
 import { Recommend } from "./pages/Recommend";
 import { Signals } from "./pages/Signals";
@@ -40,6 +41,12 @@ export function App() {
     if (id !== tab) window.location.hash = id;
   };
 
+  // A distinct title per tab reads better in browser tabs, history and shared links.
+  useEffect(() => {
+    const label = TABS.find((t) => t.id === tab)?.label;
+    document.title = `${label} | Purchase Compass`;
+  }, [tab]);
+
   const empty = meta.data?.purchaseCount === 0;
 
   return (
@@ -68,10 +75,20 @@ export function App() {
       </header>
 
       {meta.data?.demoMode && (
-        <p className="demo-banner">
-          デモ用の架空の購入履歴（大学生・約半年分）を表示しています。
-          <a href="https://github.com/kaisei467/purchase-compass">ソースコード</a>
-        </p>
+        <aside className="demo-banner" aria-label="このデモについて">
+          <p>
+            架空の大学生の約半年分・{meta.data.purchaseCount}件の購入履歴で動くデモです。
+            <a href={SAMPLE_DATA_DOC_URL}>データの作り方</a>
+            <a href={REPO_URL}>ソースコード</a>
+          </p>
+          <p className="demo-guide">
+            見どころ：
+            <a href="#trends">傾向</a>で買い方のクセを、
+            <a href="#recommend">おすすめ</a>で理由付きの提案を、
+            <a href="#signals">気づき</a>で定期課金と衝動買いを見られます。
+            <a href="#data">データ</a>では見本のCSVで取り込みを試せます。
+          </p>
+        </aside>
       )}
 
       <main>
@@ -86,7 +103,12 @@ export function App() {
             </button>
           </section>
         ) : insights.error ? (
-          <p className="error">{insights.error.message}</p>
+          <div className="load-error" role="alert">
+            <p className="error">{insights.error.message}</p>
+            <button type="button" onClick={insights.reload}>
+              もう一度読み込む
+            </button>
+          </div>
         ) : !insights.data ? (
           <p className="muted loading">分析しています…</p>
         ) : tab === "trends" ? (
