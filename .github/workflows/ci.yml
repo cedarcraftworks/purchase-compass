@@ -17,8 +17,8 @@ jobs:
       run:
         working-directory: services/analyzer
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -31,7 +31,7 @@ jobs:
         env:
           UPDATE_CONTRACT: "1"
       - name: Share the freshly generated contract with the TypeScript job
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: contract
           path: contract/
@@ -52,13 +52,14 @@ jobs:
     env:
       TEST_DATABASE_URL: postgres://postgres:postgres@localhost:5432/purchase_compass_test
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
-      - run: npm install --no-audit --no-fund
+          cache: npm
+      - run: npm ci --no-audit --no-fund
       - name: Use the contract the analyzer just produced
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: contract
           path: contract/
@@ -77,5 +78,5 @@ jobs:
     name: Docker images build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: docker compose build
