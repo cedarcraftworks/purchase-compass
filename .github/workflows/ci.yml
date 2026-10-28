@@ -74,6 +74,21 @@ jobs:
       - name: Build
         run: npm run build
 
+  e2e:
+    name: End-to-end (public demo in a browser)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Install the browser
+        run: npx playwright install --with-deps chromium
+      - name: Build the GitHub Pages demo and test it in Chromium
+        run: npm run test:e2e --workspace=@purchase-compass/web
+
   docker:
     name: Docker images build
     runs-on: ubuntu-latest

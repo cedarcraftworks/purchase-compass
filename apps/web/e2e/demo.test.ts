@@ -73,7 +73,12 @@ async function open(hash: string, options: Parameters<Browser["newPage"]>[0] = {
   return { page, problems };
 }
 
-const heading = (page: Page) => page.locator("main h2").first().innerText();
+const heading = (page: Page) => page.locator("main h2").first().textContent();
+
+/** Waits for the screen to show `text` as its first heading (navigation re-renders asynchronously). */
+async function expectHeading(page: Page, text: string) {
+  await page.locator("main h2").first().filter({ hasText: text }).waitFor({ timeout: 5_000 });
+}
 
 describe("public demo", () => {
   it("opens every tab from its URL, with its own title and no errors", async () => {
@@ -89,16 +94,16 @@ describe("public demo", () => {
   it("explains the data and guides visitors to each tab", async () => {
     const { page } = await open("trends");
     const banner = page.locator(".demo-banner");
-    assert.match(await banner.innerText(), /架空の大学生/);
+    assert.match((await banner.textContent()) ?? "", /架空の大学生/);
     const links = await banner
       .locator("a[href^='http']")
       .evaluateAll((as) => as.map((a) => (a as HTMLAnchorElement).href));
     assert.ok(links.some((h) => h.endsWith("docs/sample-data.md")));
 
     await page.locator(".demo-guide a", { hasText: "おすすめ" }).click();
-    assert.equal(await heading(page), HEADINGS.recommend);
+    await expectHeading(page, HEADINGS.recommend);
     await page.goBack();
-    assert.equal(await heading(page), HEADINGS.trends);
+    await expectHeading(page, HEADINGS.trends);
     await page.close();
   });
 
@@ -150,7 +155,7 @@ describe("public demo", () => {
     await page.keyboard.press("Tab"); // the current tab
     await page.keyboard.press("Tab"); // おすすめ
     await page.keyboard.press("Enter");
-    assert.equal(await heading(page), HEADINGS.recommend);
+    await expectHeading(page, HEADINGS.recommend);
     await page.close();
   });
 
